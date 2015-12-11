@@ -9,7 +9,7 @@
 * Add to your `settings.gradle`:
 ```
 include ':io.reactionframework.android.image'
-project(':io.reactionframework.android.image').projectDir = new File(settingsDir, '../node_modules/image-utils-android')
+project(':io.reactionframework.android.image').projectDir = new File(settingsDir, '../node_modules/rction-image-android')
 ```
 * Add to your `app/build.gradle`:
 ```
