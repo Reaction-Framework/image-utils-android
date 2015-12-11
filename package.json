@@ -1,7 +1,9 @@
 {
-  "name": "image-utils-android",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {},
-  "dependencies": {}
+  "name": "rction-image-android",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/Reaction-Framework/rction-image-android.git"
+  },
+  "version": "0.0.1"
+  "author": "Reaction Framework Team"
 }
