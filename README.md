@@ -11,7 +11,7 @@
 include ':io.reactionframework.android.image'
 project(':io.reactionframework.android.image').projectDir = new File(settingsDir, '../node_modules/rction-image-android')
 ```
-* Add to your `app/build.gradle`:
+* Add to `build.gradle`:
 ```
 dependencies {
 	...
