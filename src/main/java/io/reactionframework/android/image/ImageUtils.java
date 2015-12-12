@@ -74,9 +74,12 @@ public class ImageUtils {
     }
 
     public static String bitmapToString(Bitmap bitmap) {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+        return bitmapToString(bitmap, Bitmap.CompressFormat.PNG);
+    }
 
+    public static String bitmapToString(Bitmap bitmap, Bitmap.CompressFormat compressFormat) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        bitmap.compress(compressFormat, 100, out);
         return Base64.encodeToString(out.toByteArray(), Base64.DEFAULT);
     }
 
