@@ -2,12 +2,15 @@ package io.reactionframework.android.image;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,6 +20,16 @@ import java.util.Locale;
 
 public class ImageUtils {
     private static final String LOG_TAG = ImageUtils.class.getSimpleName();
+
+    public static byte[] bitmapToByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+        return out.toByteArray();
+    }
+
+    public static Bitmap bitmapFromByteArray(byte[] array) {
+        return BitmapFactory.decodeByteArray(array, 0, array.length);
+    }
 
     public static String dataToBase64String(byte[] data) {
         return Base64.encodeToString(data, Base64.DEFAULT);
