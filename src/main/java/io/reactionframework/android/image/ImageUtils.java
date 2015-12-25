@@ -3,12 +3,13 @@ package io.reactionframework.android.image;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
+import io.reactionframework.android.image.bitmapdecoder.BitmapFromArrayDecoder;
+import io.reactionframework.android.image.bitmapdecoder.BitmapFromFileUrlDecoder;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -27,8 +28,12 @@ public class ImageUtils {
         return out.toByteArray();
     }
 
-    public static Bitmap bitmapFromByteArray(byte[] array) {
-        return BitmapFactory.decodeByteArray(array, 0, array.length);
+    public static Bitmap bitmapFromByteArray(byte[] array, int maxWidth, int maxHeight) {
+        return new BitmapFromArrayDecoder(array, maxWidth, maxHeight).decode();
+    }
+
+    public static Bitmap bitmapFromFileUrl(String fileUrl, int maxWidth, int maxHeight) {
+        return new BitmapFromFileUrlDecoder(fileUrl, maxWidth, maxHeight).decode();
     }
 
     public static String dataToBase64String(byte[] data) {
