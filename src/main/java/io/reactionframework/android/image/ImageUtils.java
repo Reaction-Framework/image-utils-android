@@ -44,12 +44,22 @@ public class ImageUtils {
         return Base64.decode(encoded, Base64.DEFAULT);
     }
 
+    public static Uri storeInAppFiles(Context context, byte[] data) {
+        return storeInAppFiles(context, data, null);
+    }
+
+    public static Uri storeInAppFiles(Context context, byte[] data, String photoName) {
+        return storeOnDisk(data, photoName, context.getFilesDir());
+    }
+
     public static Uri storeInCameraRoll(Context context, byte[] data) {
         return storeInCameraRoll(context, data, null);
     }
 
     public static Uri storeInCameraRoll(Context context, byte[] data, String photoName) {
-        return storeOnDisc(context, data, photoName, Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM));
+        Uri uri = storeOnDisk(data, photoName, Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM));
+        addToMediaStore(context, uri);
+        return uri;
     }
 
     public static Uri storeInPictures(Context context, byte[] data) {
@@ -57,10 +67,12 @@ public class ImageUtils {
     }
 
     public static Uri storeInPictures(Context context, byte[] data, String photoName) {
-        return storeOnDisc(context, data, photoName, Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES));
+        Uri uri = storeOnDisk(data, photoName, Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES));
+        addToMediaStore(context, uri);
+        return uri;
     }
 
-    private static Uri storeOnDisc(Context context, byte[] data, String photoName, File directory) {
+    private static Uri storeOnDisk(byte[] data, String photoName, File directory) {
         if (TextUtils.isEmpty(photoName)) {
             photoName = String.format("IMG_%s", new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date()));
         }
@@ -83,11 +95,17 @@ public class ImageUtils {
             return null;
         }
 
-        Intent mediaScannerIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        Uri fileContentUri = Uri.fromFile(imageFile);
-        mediaScannerIntent.setData(fileContentUri);
-        context.sendBroadcast(mediaScannerIntent);
+        return Uri.fromFile(imageFile);
+    }
 
-        return fileContentUri;
+    private static void addToMediaStore(Context context, Uri uri) {
+        if (uri == null) {
+            Log.e(LOG_TAG, "Tried to store null url to media store.");
+            return;
+        }
+
+        Intent mediaScannerIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        mediaScannerIntent.setData(uri);
+        context.sendBroadcast(mediaScannerIntent);
     }
 }
